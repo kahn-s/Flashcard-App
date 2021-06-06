@@ -6,7 +6,7 @@ import DecksList from "./DecksList";
 
 function Layout() {
   return (
-    <>
+    <section>
       <Header />
       <div className="container">
         {/* TODO: Implement the screen starting here */}
@@ -19,7 +19,7 @@ function Layout() {
           </Route>
         </Switch>
       </div>
-    </>
+    </section>
   );
 }
 
