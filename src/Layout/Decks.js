@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, useRouteMatch, useParams } from "react-router-dom";
 import Study from "./Study";
 
-function Decks({ decks }, { error }) {
+function Decks({ decks }) {
   const { url } = useRouteMatch();
   const { deckId } = useParams();
   const FindDeckById = () => {
@@ -46,7 +46,7 @@ function Decks({ decks }, { error }) {
           <DeckScreen />
         </Route>
         <Route path={`${url}/:deckId/study`}>
-          <Study error={error} />
+          <Study decks={decks} />
         </Route>
         <Route path={`${url}/:deckId/edit`}>
           <EditDeckScreen />

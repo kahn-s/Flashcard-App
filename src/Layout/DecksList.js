@@ -5,16 +5,18 @@ import ErrorMessage from "./ErrorMessage";
 import Decks from "./Decks";
 
 export const DecksList = () => {
-  const [decks, setDecks] = useState([]);
+  const [decks, setDecks] = useState({});
   const [error, setError] = useState(undefined);
 
-  useEffect(() => {
-    const abortController = new AbortController();
+  // useEffect(() => {
+  //   const abortController = new AbortController();
 
-    listDecks(abortController.signal).then(setDecks).catch(setError);
+  //   listDecks(abortController.signal)
+  //     .then((decks) => setDecks(decks))
+  //     .catch((error) => setError(error));
 
-    return () => abortController.abort();
-  }, []);
+  //   return () => abortController.abort();
+  // }, []);
 
   if (error) {
     return <ErrorMessage error={error} />;
@@ -27,7 +29,7 @@ export const DecksList = () => {
       setDecks(newDecks);
     }
   }
-  const count = 0; //get from Cards component
+
   const list = decks.map((deck) => {
     return (
       <div key={deck.id} className="card">
@@ -36,7 +38,9 @@ export const DecksList = () => {
             Create Deck
           </Link>
           <h5 className="card-title">{deck.name}</h5>
-          <h6 className="card-subtitle mb-2 text-muted">{count} cards</h6>
+          <h6 className="card-subtitle mb-2 text-muted">
+            {deck.cards.length} cards
+          </h6>
           <p className="card-text">{deck.description}</p>
           <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
             View

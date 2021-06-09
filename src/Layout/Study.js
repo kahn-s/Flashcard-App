@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory, useRouteMatch } from "react-router-dom";
+import { useParams, useRef } from "react-router-dom";
 import { readDeck } from "../utils/api/index.js";
 import ErrorMessage from "./ErrorMessage";
 import Cards from "./Cards";
@@ -9,62 +9,28 @@ import Cards from "./Cards";
 function Study() {
   const [deck, setDeck] = useState([]);
   const [error, setError] = useState(undefined);
+  const { deckId } = useParams();
+  const [currentDeckId, setCurrentDeckId] = useState(null);
+  setCurrentDeckId(deckId);
 
-  const deckId = useParams();
-
-  console.log(deckId);
-
-  /* useEffect(() => {
+  /*useEffect(() => {
     const abortController = new AbortController();
 
-    readDeck(deckId, abortController.signal)
-      .then((res) => {
-        setDeck(
-          res.data.results.map((cardItem, index) => {
-            return {
-              id: cardItem.id,
-              question: cardItem.front,
-              answer: cardItem.back,
-            };
-          })
-        );
-        console.log(res.data);
-      })
-      .catch(setError);
+    currentDeckId &&
+      readDeck(currentDeckId, abortController.signal)
+        .then((deck) => setDeck(deck))
+
+        .catch((error) => setError(error));
+
+    console.log("deck= ", deck);
 
     return () => abortController.abort();
-  }, [deckId]);
+  }, []);
 
   if (error) {
     return <ErrorMessage error={error} />;
   }*/
-  const sampleDeck = [
-    {
-      id: 3,
-      name: "Sample Deck",
-      description: "This is a sample Deck. ",
-    },
-  ];
-  const sampleCards = [
-    {
-      id: 1,
-      front: "Question 1",
-      back: "Answer 1",
-      deckId: 3,
-    },
-    {
-      id: 2,
-      front: "Question 2",
-      back: "Answer 2",
-      deckId: "3",
-    },
-    {
-      id: 3,
-      front: "Question 3",
-      back: "Answer 3",
-      deckId: "3",
-    },
-  ];
+
   return (
     <section>
       <nav aria-label="breadcrumb">
@@ -73,7 +39,7 @@ function Study() {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deckId}`}>Sample Deck</a>
+            <a href={`/decks/${deckId}`}>${deck.title}</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             Study
@@ -85,8 +51,7 @@ function Study() {
       </div>
 
       <div>
-        <p>This is where the Card component is called</p>
-        <Cards sampleCards={sampleCards} sampleDeck={sampleDeck} />
+        <Cards deck={deck} />
       </div>
     </section>
   );
