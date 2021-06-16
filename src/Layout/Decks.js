@@ -1,58 +1,83 @@
-import React from "react";
-import { Switch, Route, useRouteMatch, useParams } from "react-router-dom";
-import Study from "./Study";
+import React, { useState, useEffect } from "react";
+import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import ErrorMessage from "./ErrorMessage";
+import { listDecks } from "../utils/api/index.js";
 
-function Decks({ decks }) {
-  const { url, path } = useRouteMatch();
-  const { deckId } = useParams();
-  const FindDeckById = () => {
-    decks.find((deck) => deck.id === { deckId });
-  };
-  function DeckScreen() {
-    FindDeckById();
-    console.log("View Deck");
-    return (
-      <div>
-        <p>This is the Deck Screen</p>
-      </div>
-    );
+function Decks() {
+  const [decks, setDecks] = useState([]);
+  const [error, setError] = useState(undefined);
+  const abortController = new AbortController();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    listDecks(abortController.signal)
+      .then((decks) => {
+        console.log("decks= ", decks);
+        return setDecks(decks);
+      })
+      .catch((error) => setError(error));
+
+    return () => abortController.abort();
+  }, []);
+  useEffect(() => {
+    console.log(`decks is rendered ${decks}`);
+  }, [decks]);
+
+  function handleDelete({ deck }) {
+    const toRemove = deck.id;
+    if (window.confirm("Delete this deck? You won't be able to recover it.")) {
+      const newDecks = decks.filter((deck) => deck.id !== toRemove);
+      setDecks(newDecks);
+    }
   }
 
-  function EditDeckScreen() {
-    FindDeckById();
-    console.log("Edit Deck");
-    return (
-      <div>
-        <p>This is the Edit Deck Screen</p>
-      </div>
-    );
-  }
-  function NewDeckScreen() {
-    console.log("New Deck");
-    return (
-      <div>
-        <p>This is the New Deck Screen</p>
-      </div>
-    );
+  function renderDecks() {
+    if (decks.length > 0) {
+      console.log("have decks", decks);
+      const allDecks = decks.map((deck) => {
+        return (
+          <div key={deck.id} className="card">
+            <div className="card-body" key={deck.id}>
+              <Link to="/decks/new" className="btn btn-secondary">
+                Create Deck
+              </Link>
+              <h5 className="card-title">{deck.name}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {deck.cards.length} cards
+              </h6>
+              <p className="card-text">{deck.description}</p>
+              <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
+                View
+              </Link>
+              <Link to={`/decks/${deck.id}/study`} className="btn btn-primary">
+                Study
+              </Link>
+              <Link to={`/decks/${deck.id}/edit`} className="btn btn-secondary">
+                Edit
+              </Link>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete({ deck })}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        );
+      });
+      console.log(allDecks);
+      return allDecks;
+    } else {
+      return null;
+    }
   }
 
   return (
-    <section id="test-links">
-      <Switch>
-        <Route path={`${path}/new`}>
-          <NewDeckScreen />
-        </Route>
-        <Route exact path={`${path}/:deckId`}>
-          <DeckScreen />
-        </Route>
-        <Route path={`${path}/:deckId/study`}>
-          <Study decks={decks} />
-        </Route>
-        <Route path={`${path}/:deckId/edit`}>
-          <EditDeckScreen />
-        </Route>
-      </Switch>
-    </section>
+    <main className="container">
+      <Route exact path="/">
+        <section className="row">{renderDecks()}</section>
+      </Route>
+    </main>
   );
 }
 export default Decks;

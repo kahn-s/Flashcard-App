@@ -1,9 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Header from "./Header";
-import NotFound from "./NotFound";
-import DecksList from "./DecksList";
-
+import Decks from "./Decks";
 function Layout() {
   return (
     <section>
@@ -11,12 +9,12 @@ function Layout() {
       <div className="container">
         <Switch>
           <Route exact path="/">
-            <DecksList />
+            <Decks />
+          </Route>
+          <Route No Match>
+            <h1> 404 NotFound </h1>
           </Route>
         </Switch>
-        <Route NoMatch>
-          <NotFound />
-        </Route>
       </div>
     </section>
   );
