@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-} from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import { listDecks } from "../utils/api/index.js";
-import ViewDeck from "./ViewDeck";
+import { handleDelete } from "../utils/decks/index.js";
 
 function Decks() {
   const [decks, setDecks] = useState([]);
@@ -28,14 +22,6 @@ function Decks() {
   useEffect(() => {
     console.log(`decks is rendered ${decks}`);
   }, [decks]);
-
-  function handleDelete({ deck }) {
-    const toRemove = deck.id;
-    if (window.confirm("Delete this deck? You won't be able to recover it.")) {
-      const newDecks = decks.filter((deck) => deck.id !== toRemove);
-      setDecks(newDecks);
-    }
-  }
 
   function renderDecks() {
     if (decks.length > 0) {
@@ -62,7 +48,7 @@ function Decks() {
               </Link>
               <button
                 className="btn btn-danger"
-                onClick={() => handleDelete({ deck })}
+                onClick={() => handleDelete({ deck }, { setDecks }, { decks })}
               >
                 Delete
               </button>
@@ -77,20 +63,6 @@ function Decks() {
     }
   }
 
-  return (
-    <Router>
-      <main className="container">
-        <Switch>
-          <Route exact path="/">
-            <section className="row">{renderDecks()}</section>
-          </Route>
-          <Route path="/:deckId">
-            <ViewDeck />
-          </Route>
-          <Route path="/decks"></Route>
-        </Switch>
-      </main>
-    </Router>
-  );
+  return <section className="row">{renderDecks()}</section>;
 }
 export default Decks;
