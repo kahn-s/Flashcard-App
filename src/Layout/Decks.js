@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+} from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import { listDecks } from "../utils/api/index.js";
+import ViewDeck from "./ViewDeck";
 
 function Decks() {
   const [decks, setDecks] = useState([]);
   const [error, setError] = useState(undefined);
   const abortController = new AbortController();
-
+  const { path } = useRouteMatch();
   useEffect(() => {
     const abortController = new AbortController();
     listDecks(abortController.signal)
       .then((decks) => {
-        console.log("decks= ", decks);
         return setDecks(decks);
       })
       .catch((error) => setError(error));
@@ -33,7 +39,6 @@ function Decks() {
 
   function renderDecks() {
     if (decks.length > 0) {
-      console.log("have decks", decks);
       const allDecks = decks.map((deck) => {
         return (
           <div key={deck.id} className="card">
@@ -65,7 +70,7 @@ function Decks() {
           </div>
         );
       });
-      console.log(allDecks);
+
       return allDecks;
     } else {
       return null;
@@ -73,11 +78,19 @@ function Decks() {
   }
 
   return (
-    <main className="container">
-      <Route exact path="/">
-        <section className="row">{renderDecks()}</section>
-      </Route>
-    </main>
+    <Router>
+      <main className="container">
+        <Switch>
+          <Route exact path="/">
+            <section className="row">{renderDecks()}</section>
+          </Route>
+          <Route path="/:deckId">
+            <ViewDeck />
+          </Route>
+          <Route path="/decks"></Route>
+        </Switch>
+      </main>
+    </Router>
   );
 }
 export default Decks;
