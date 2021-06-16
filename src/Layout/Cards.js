@@ -1,47 +1,34 @@
-import React, { useState } from "react";
-import classNames from "../utils/class-names/index.js";
-//@deck = array of cards from selected deck
-// I need to display 1 card and toggle Flip it
+import React, { useState, useEffect } from "react";
+
 export default function Cards({ deck }) {
-  const [show, setShow] = useState(true);
   const [flip, setFlip] = useState(true);
   const [currentCard, setCurrentCard] = useState(null);
+  const cards = [];
+  cards.push(...deck.cards);
 
-  // console.log(deck);
-  /* if (deck) {
-    setCurrentCard(deck.cards[0]);
-    console.log(currentCard);
-  }*/
+  useEffect(() => {
+    setCurrentCard(cards[0]);
+  }, []);
 
   const NextCard = () => {
-    const length = deck.cards.length;
-    let index = deck.indexOf({ currentCard });
-    if (index < length - 1) {
-      index++;
-    }
-    if (index === length - 1) {
-      index = 0;
-    }
-    setCurrentCard(deck[index]);
+    console.log("currentCard index =", cards.indexOf(currentCard));
+    let currentIndex = cards.indexOf(currentCard);
+    currentIndex < cards.length ? currentIndex++ : (currentIndex = 0);
+    setCurrentCard(cards[currentIndex]);
   };
 
-  console.log(deck);
-  const cards = deck.cards;
-  console.log(cards);
-  const list =
-    cards &&
-    cards.map((card) => {
+  // console.log(cards);
+  // const list =
+  // cards &&
+  // cards.map((card) => {
+  function showCard() {
+    console.log(currentCard);
+    if (currentCard) {
       return (
-        <div key={card.id} className="card-data">
-          <div
-            className={classNames("card-body", {
-              show: currentCard,
-              hide: !currentCard,
-            })}
-          />
-          <h6 className="card-subtitle">{`Card ${card.id} of ${deck.cards.length}`}</h6>
+        <div key={currentCard.id} className="card-data">
+          <h6 className="card-subtitle">{`Card ${currentCard.id} of ${deck.cards.length}`}</h6>
           <div className="card-text">
-            {flip ? <p> {card.front}</p> : <p>{card.back}</p>}
+            {flip ? <p> {currentCard.front}</p> : <p>{currentCard.back}</p>}
           </div>
 
           <button
@@ -60,7 +47,7 @@ export default function Cards({ deck }) {
           </button>
         </div>
       );
-    });
-
-  return <div>{list}</div>;
+    }
+  }
+  return <div>{showCard()}</div>;
 }

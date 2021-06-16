@@ -9,15 +9,14 @@ function Layout() {
     <section>
       <Header />
       <div className="container">
-        {/* TODO: Implement the screen starting here */}
         <Switch>
-          <Route path="/">
+          <Route exact path="/">
             <DecksList />
           </Route>
-          <Route NoMatch>
-            <NotFound />
-          </Route>
         </Switch>
+        <Route NoMatch>
+          <NotFound />
+        </Route>
       </div>
     </section>
   );

@@ -3,7 +3,7 @@ import { Switch, Route, useRouteMatch, useParams } from "react-router-dom";
 import Study from "./Study";
 
 function Decks({ decks }) {
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
   const { deckId } = useParams();
   const FindDeckById = () => {
     decks.find((deck) => deck.id === { deckId });
@@ -39,16 +39,16 @@ function Decks({ decks }) {
   return (
     <section id="test-links">
       <Switch>
-        <Route path={`${url}/new`}>
+        <Route path={`${path}/new`}>
           <NewDeckScreen />
         </Route>
-        <Route exact path={`/decks/:deckId`}>
+        <Route exact path={`${path}/:deckId`}>
           <DeckScreen />
         </Route>
-        <Route path={`${url}/:deckId/study`}>
+        <Route path={`${path}/:deckId/study`}>
           <Study decks={decks} />
         </Route>
-        <Route path={`${url}/:deckId/edit`}>
+        <Route path={`${path}/:deckId/edit`}>
           <EditDeckScreen />
         </Route>
       </Switch>
