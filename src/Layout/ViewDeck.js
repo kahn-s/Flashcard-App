@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, withRouter } from "react-router-dom";
+
 import { readDeck } from "../utils/api/index.js";
 
-function ViewDeck({ handleDelete }) {
-  const [deck, setDeck] = useState([]);
-  const [error, setError] = useState(undefined);
+//Get a single deck
+
+function ViewDeck({ decks, deck, setDeck, handleDelete, error, setError }) {
   const { deckId } = useParams();
 
   useEffect(() => {
     const abortController = new AbortController();
-    readDeck(deckId, abortController.signal)
-      .then((deck) => {
-        return setDeck(deck);
-      })
-      .catch((error) => setError(error));
+    deckId &&
+      readDeck(deckId, abortController.signal)
+        .then((deck) => {
+          return setDeck(deck);
+        })
+        .catch((error) => setError(error));
 
     return () => abortController.abort();
-  }, [deckId]);
+  }, []);
 
   if (error) {
     return <ErrorMessage error={error} />;
   }
 
+  console.log(deck.name);
   deck.cards ? console.log("this deck = ", deck) : console.log("no deck");
 
   return (
@@ -34,7 +37,7 @@ function ViewDeck({ handleDelete }) {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deck.id}`}>{deck.name}</a>
+            <p>{deck.name}</p>
           </li>
         </ol>
       </nav>
@@ -51,7 +54,10 @@ function ViewDeck({ handleDelete }) {
           <Link to={`/decks/${deck.id}/addCards`} className="btn btn-primary">
             Add Cards
           </Link>
-          <button className="btn btn-danger" onClick={handleDelete}>
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDelete({ deck })}
+          >
             Delete
           </button>
         </div>
@@ -59,4 +65,4 @@ function ViewDeck({ handleDelete }) {
     </section>
   );
 }
-export default ViewDeck;
+export default withRouter(ViewDeck);

@@ -1,28 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
-import ErrorMessage from "./ErrorMessage";
-import { listDecks } from "../utils/api/index.js";
-import { handleDelete } from "../utils/decks/index.js";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function Decks() {
-  const [decks, setDecks] = useState([]);
-  const [error, setError] = useState(undefined);
-  const abortController = new AbortController();
-  const { path } = useRouteMatch();
-  useEffect(() => {
-    const abortController = new AbortController();
-    listDecks(abortController.signal)
-      .then((decks) => {
-        return setDecks(decks);
-      })
-      .catch((error) => setError(error));
-
-    return () => abortController.abort();
-  }, []);
-  useEffect(() => {
-    console.log(`decks is rendered ${decks}`);
-  }, [decks]);
-
+function Decks({ decks, handleDelete }) {
   function renderDecks() {
     if (decks.length > 0) {
       const allDecks = decks.map((deck) => {
@@ -48,7 +27,7 @@ function Decks() {
               </Link>
               <button
                 className="btn btn-danger"
-                onClick={() => handleDelete({ deck }, { setDecks }, { decks })}
+                onClick={() => handleDelete({ deck })}
               >
                 Delete
               </button>
