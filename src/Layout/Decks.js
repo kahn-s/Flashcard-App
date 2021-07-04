@@ -8,9 +8,6 @@ function Decks({ decks, handleDelete }) {
         return (
           <div key={deck.id} className="card">
             <div className="card-body" key={deck.id}>
-              <Link to="/decks/new" className="btn btn-secondary">
-                Create Deck
-              </Link>
               <h5 className="card-title">{deck.name}</h5>
               <h6 className="card-subtitle mb-2 text-muted">
                 {deck.cards.length} cards
@@ -42,6 +39,13 @@ function Decks({ decks, handleDelete }) {
     }
   }
 
-  return <section className="row">{renderDecks()}</section>;
+  return (
+    <section className="row">
+      <Link to="/decks/new" className="btn btn-secondary">
+        Create Deck
+      </Link>
+      {renderDecks()}
+    </section>
+  );
 }
 export default Decks;

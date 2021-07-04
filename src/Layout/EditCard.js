@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useHistory, useParams, withRouter } from "react-router-dom";
-import { updateDeck, readDeck } from "../utils/api/index.js";
+import { useParams, useHistory } from "react-router-dom";
+import { readDeck, readCard, updateCard } from "../utils/api/index.js";
 import ErrorMessage from "./ErrorMessage";
 
-function EditDeck({ deck, setDeck, error, setError }) {
-  const history = useHistory();
-  console.log("edit deck screen", deck);
-
+function EditCard({ deck, setDeck, card, setCard, error, setError }) {
   const { deckId } = useParams();
+  const { cardId } = useParams();
+  const history = useHistory();
+
   useEffect(() => {
     const abortController = new AbortController();
     deckId &&
@@ -19,28 +19,35 @@ function EditDeck({ deck, setDeck, error, setError }) {
 
     return () => abortController.abort();
   }, [deckId]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    cardId &&
+      readCard(cardId, abortController.signal)
+        .then((card) => {
+          return setCard(card);
+        })
+        .catch((error) => setError(error));
+
+    return () => abortController.abort();
+  }, [cardId]);
+
   if (error) {
     return <ErrorMessage error={error} />;
   }
-
-  console.log(deck.name);
-
-  async function handleEditDeck(e) {
-    const name = document.getElementById("deckName").value;
-    const description = document.getElementById("deckDescr").value;
-    const editedDeck = {
-      id: deck.id,
-      name: name,
-      description: description,
-      cards: deck.cards,
+  async function handleSave() {
+    const front = document.getElementById("cardFront").value;
+    const back = document.getElementById("cardBack").value;
+    const editedCard = {
+      id: cardId,
+      front: front,
+      back: back,
+      deckId: deckId,
     };
-    setDeck(editedDeck);
-    let respEditedDeck = await updateDeck(editedDeck);
-    console.log("this is the updated Deck!", respEditedDeck);
-    history.push("/");
+    updateCard(editedCard);
+    history.push(`/decks/${deckId}`);
   }
-
-  if (deck) {
+  if (card && Object.keys(card).length > 0) {
     return (
       <main>
         <nav aria-label="breadcrumb">
@@ -53,35 +60,35 @@ function EditDeck({ deck, setDeck, error, setError }) {
               <a href={`/decks/${deck.id}`}>{deck.name}</a>
             </li>
             <li className="breadcrumb-item">
-              <p>Edit Deck</p>
+              <p>Edit Card {cardId}</p>
             </li>
           </ol>
         </nav>
-        <section key="deck">
-          <h1 className="card-title">Edit Deck</h1>
-          <form key={deck.id} className="form-group">
+        <section key="editCard">
+          <h2 className="card-title">{`${deck.name}: Edit Card`}</h2>
+          <form key={card.id} className="form-group">
             <div className="form-group">
-              <label htmlFor="deckName">Name</label>
+              <label htmlFor="cardFront">Front</label>
               <textarea
                 className="form-control"
-                id="deckName"
-                rows="1"
-                placeholder={`${deck.name}`}
-              ></textarea>
-              <label htmlFor="deckDescr">Description</label>
-              <textarea
-                className="form-control"
-                id="deckDescr"
+                id="cardFront"
                 rows="3"
-                placeholder={`${deck.description}`}
+                placeholder={`${card.front}`}
+              ></textarea>
+              <label htmlFor="cardBack">Back</label>
+              <textarea
+                className="form-control"
+                id="cardBack"
+                rows="3"
+                placeholder={`${card.back}`}
               ></textarea>
             </div>
 
             <button
               className="btn btn-secondary"
-              type="reset"
+              type="button"
               value="Reset"
-              onClick={() => history.push("/")}
+              onClick={() => history.push(`/decks/${deckId}`)}
             >
               Cancel
             </button>
@@ -91,10 +98,10 @@ function EditDeck({ deck, setDeck, error, setError }) {
               value="Submit"
               onClick={(e) => {
                 e.preventDefault();
-                handleEditDeck();
+                handleSave();
               }}
             >
-              Submit
+              Save
             </button>
           </form>
         </section>
@@ -104,4 +111,4 @@ function EditDeck({ deck, setDeck, error, setError }) {
     return null;
   }
 }
-export default withRouter(EditDeck);
+export default EditCard;

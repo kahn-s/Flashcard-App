@@ -9,6 +9,21 @@
       "name": "React Router",
       "description": "React Router is a collection of navigational components that compose declaratively with your application.",
       "id": 2
+    },
+    {
+      "id": 4,
+      "name": "",
+      "description": "Old schedule"
+    },
+    {
+      "name": "Test delete",
+      "description": "deleterious",
+      "id": 5
+    },
+    {
+      "name": "Mock Deck 33",
+      "description": "Test",
+      "id": 6
     }
   ],
   "cards": [
@@ -31,23 +46,113 @@
       "deckId": 1
     },
     {
-      "front": "What path will match the follow Route?\n<Route>\n  <NotFound />\n</Route>",
-      "back": "All paths. A route with no path matches all URL's",
-      "deckId": 2,
-      "id": 4
-    },
-    {
-      "front": "What does <Switch> do?",
-      "back": "Renders the first matching child <Route> ",
-      "deckId": 2,
-      "id": 5
-    },
-    {
       "cards": [],
       "front": "b",
       "back": "b",
       "deckId": 1,
       "id": 7
+    },
+    {
+      "front": "This is the new question",
+      "back": "new Answer",
+      "deckId": null,
+      "id": 8
+    },
+    {
+      "front": "My new front",
+      "back": "My new back",
+      "deckId": null,
+      "id": 9
+    },
+    {
+      "front": "A",
+      "back": "is for Apple",
+      "deckId": null,
+      "id": 10
+    },
+    {
+      "front": "Sugar",
+      "back": "main ingredient",
+      "deckId": null,
+      "id": 11
+    },
+    {
+      "front": "Flour",
+      "back": " ingredient #2",
+      "deckId": null,
+      "id": 12
+    },
+    {
+      "front": "when to eat",
+      "back": "need sugar",
+      "deckId": null,
+      "id": 13
+    },
+    {
+      "front": "New front",
+      "back": "NewBack",
+      "deckId": 3,
+      "id": 14
+    },
+    {
+      "front": "Clean kitchen",
+      "back": "Refrigerator",
+      "deckId": 4,
+      "id": 15
+    },
+    {
+      "front": "Clean salon",
+      "back": "wash floors",
+      "deckId": 4,
+      "id": 16
+    },
+    {
+      "id": 17,
+      "front": "",
+      "back": "",
+      "deckId": "5"
+    },
+    {
+      "front": "card 2",
+      "back": "card 2 back",
+      "deckId": 5,
+      "id": 18
+    },
+    {
+      "id": 19,
+      "front": "New Front",
+      "back": "New Back",
+      "deckId": "5"
+    },
+    {
+      "front": "Card night",
+      "back": "Card day",
+      "deckId": 5,
+      "id": 20
+    },
+    {
+      "front": "Card A",
+      "back": "Answer A",
+      "deckId": 6,
+      "id": 21
+    },
+    {
+      "front": "Card B",
+      "back": "Answer B",
+      "deckId": 6,
+      "id": 22
+    },
+    {
+      "id": 23,
+      "front": "new Question C",
+      "back": "",
+      "deckId": "6"
+    },
+    {
+      "front": "Card C",
+      "back": "Answer C",
+      "deckId": 6,
+      "id": 24
     }
   ]
 }
