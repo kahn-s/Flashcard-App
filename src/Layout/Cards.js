@@ -52,7 +52,11 @@ function Cards({ deck }) {
   if (currentCard && Object.keys(currentCard).length > 0) {
     return (
       <div key={currentCard.id} className="card-data">
-        <h6 className="card-subtitle">{`Card ${currentCard.id} of ${cards.length}`}</h6>
+        <h6 className="card-subtitle">
+          <span>
+            Card {currentIndex + 1} of {cards.length}
+          </span>
+        </h6>
         <div className="card-text">
           {flip ? <p> {currentCard.front}</p> : <p>{currentCard.back}</p>}
         </div>
@@ -63,20 +67,22 @@ function Cards({ deck }) {
         >
           Flip
         </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => NextCard()}
-        >
-          <span
-            className={classNames({
-              oi: true,
-              ".d-none": flip,
-              "oi-arrow-thick-right": !flip,
-            })}
-          />
-          Next
-        </button>
+        {flip && (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => NextCard()}
+          >
+            <span
+              className={classNames({
+                oi: true,
+                ".d-none": flip,
+                "oi-arrow-thick-right": !flip,
+              })}
+            />
+            Next
+          </button>
+        )}
       </div>
     );
   }

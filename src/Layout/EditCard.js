@@ -65,22 +65,26 @@ function EditCard({ deck, setDeck, card, setCard, error, setError }) {
           </ol>
         </nav>
         <section key="editCard">
-          <h2 className="card-title">{`${deck.name}: Edit Card`}</h2>
+          <h2 className="card-title">
+            {deck.name}: <span>Edit Card</span>
+          </h2>
           <form key={card.id} className="form-group">
             <div className="form-group">
               <label htmlFor="cardFront">Front</label>
-              <textarea
+              <input
                 className="form-control"
                 id="cardFront"
                 rows="3"
                 placeholder={`${card.front}`}
-              ></textarea>
+                value={card.front}
+              />
               <label htmlFor="cardBack">Back</label>
               <textarea
                 className="form-control"
                 id="cardBack"
                 rows="3"
                 placeholder={`${card.back}`}
+                value={card.back}
               ></textarea>
             </div>
 

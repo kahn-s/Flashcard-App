@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { createCard } from "../utils/api/index.js";
+import { readDeck, createCard } from "../utils/api/index.js";
+import ErrorMessage from "./ErrorMessage";
 
-function AddCards({ deck, setCards }) {
+function AddCards({ deck, setDeck, error, setError, setCards }) {
   const history = useHistory();
   const { deckId } = useParams();
   console.log("deckId = ", deckId);
   console.log("number of deck = ", deckId);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    deckId &&
+      readDeck(deckId, abortController.signal)
+        .then((deck) => {
+          return setDeck(deck);
+        })
+        .catch((error) => setError(error));
+
+    return () => abortController.abort();
+  }, [deckId]);
+
+  if (error) {
+    return <ErrorMessage error={error} />;
+  }
   async function handleSave() {
     const front = document.getElementById("cardFront").value;
     const back = document.getElementById("cardBack").value;
@@ -35,8 +51,10 @@ function AddCards({ deck, setCards }) {
           </ol>
         </nav>
         <section key="addCard">
-          <h2 className="card-title">{`${deck.name}: Add Card`}</h2>
-          <form key={deck.id} className="form-group">
+          <h2 className="card-title">
+            {deck.name}: <span>Add Card</span>
+          </h2>
+          <form key={deck.id} className="form-group" onSubmit={handleSave}>
             <div className="form-group">
               <label htmlFor="cardFront">Front</label>
               <textarea
@@ -62,15 +80,7 @@ function AddCards({ deck, setCards }) {
             >
               Done
             </button>
-            <button
-              className="btn btn-primary"
-              type="button"
-              value="Submit"
-              onClick={(e) => {
-                e.preventDefault();
-                handleSave();
-              }}
-            >
+            <button className="btn btn-primary" type="submit" value="Submit">
               Save
             </button>
           </form>

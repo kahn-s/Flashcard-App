@@ -62,18 +62,20 @@ function EditDeck({ deck, setDeck, error, setError }) {
           <form key={deck.id} className="form-group">
             <div className="form-group">
               <label htmlFor="deckName">Name</label>
-              <textarea
+              <input
                 className="form-control"
                 id="deckName"
                 rows="1"
                 placeholder={`${deck.name}`}
-              ></textarea>
+                value={deck.name}
+              />
               <label htmlFor="deckDescr">Description</label>
               <textarea
                 className="form-control"
                 id="deckDescr"
                 rows="3"
                 placeholder={`${deck.description}`}
+                value={deck.description}
               ></textarea>
             </div>
 

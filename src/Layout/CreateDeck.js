@@ -43,12 +43,12 @@ function CreateDeck() {
         <form key={"newDeck"} className="form-group">
           <div className="form-group">
             <label htmlFor="deckName">Name</label>
-            <textarea
+            <input
               className="form-control"
               id="deckName"
               rows="1"
               placeholder={"Deck Name"}
-            ></textarea>
+            />
             <label htmlFor="deckDescr">Description</label>
             <textarea
               className="form-control"
