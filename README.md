@@ -1,0 +1,3 @@
+# Flashcard-App
+This is an application that allows users to prepare decks of study cards for self-study.  Users may create new decks,   edit deck information, or delete old decks.  Within each deck the user may add, edit, or delete cards. In study mode, the user clicks through the deck as each card is displayed one side at a time, with a button to flip to its reverse. 
+I wrote this app using React.js, with minimal Bootstrap styling as required in the project guidelines.  In future, I intend to tighten up the code with Redux, and improve the styling. I would also like to include some tracking functionality, so students could self-score and keep track of progress, and also to move cards that need more practice toward the front of the deck or make them appear more often.
